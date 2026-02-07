@@ -1,20 +1,39 @@
 # predict.py
-
 import joblib
-import random
+import pandas as pd
 
-# Load only the threshold
-threshold = joblib.load("churn_threshold.pkl")
+MODEL_PATH = "churn_model.pkl"
+THRESHOLD_PATH = "churn_threshold.pkl"
+
+# Load model & threshold
+model = joblib.load(MODEL_PATH)
+threshold = joblib.load(THRESHOLD_PATH)
 
 def predict_churn(input_data: dict):
     """
-    Mock prediction function using only threshold.
-    Returns a random probability for demonstration.
+    Predict churn probability using trained ML model
+    and apply custom threshold.
     """
-    # Generate a pseudo probability (0.2 to 0.9) just for demo
-    churn_prob = random.uniform(0.2, 0.9)
+
+    # Convert input to DataFrame
+    input_df = pd.DataFrame([input_data])
+
+    # Drop ID if accidentally passed
+    if "customerID" in input_df.columns:
+        input_df.drop(columns=["customerID"], inplace=True)
+
+    # Predict probability
+    churn_proba = model.predict_proba(input_df)[0][1]
+
+    # Risk logic
+    if churn_proba >= threshold:
+        risk = "High"
+    elif churn_proba >= 0.2:
+        risk = "Moderate"
+    else:
+        risk = "Low"
 
     return {
-        "churn_probability": round(churn_prob, 3),
-        "risk": "High" if churn_prob >= threshold else "Low"
+        "churn_probability": round(float(churn_proba), 3),
+        "risk": risk
     }

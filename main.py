@@ -6,10 +6,10 @@ from predict import predict_churn
 
 app = FastAPI(title="Customer Churn Prediction API")
 
-# Enable CORS
+# Enable CORS for frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # allow all frontend origins
+    allow_origins=["*"],  # Replace with frontend URL later
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
