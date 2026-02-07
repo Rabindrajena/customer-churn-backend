@@ -1,11 +1,11 @@
 from fastapi import FastAPI
-from predict import predict_churn
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from predict import predict_churn
 
-# ASGI app must be named 'app'
 app = FastAPI(title="Customer Churn Prediction API")
 
+# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
