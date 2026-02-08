@@ -1,9 +1,13 @@
 # predict.py
 import joblib
 import pandas as pd
+import os
 
-MODEL_PATH = "churn_model.pkl"
-THRESHOLD_PATH = "churn_threshold.pkl"
+# Get the directory where this script is located
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+MODEL_PATH = os.path.join(BASE_DIR, "churn_model.pkl")
+THRESHOLD_PATH = os.path.join(BASE_DIR, "churn_threshold.pkl")
 
 # Load model & threshold
 model = joblib.load(MODEL_PATH)
